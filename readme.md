@@ -1,1 +1,1 @@
-eto master vetka
+eto test vetka
