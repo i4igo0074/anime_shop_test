@@ -1,0 +1,56 @@
+{% extends 'base_generic.html' %} 
+{% block title %}Избранное{% endblock %} 
+{% block content %} 
+{% load static %} 
+ 
+<div class="wrapper"> 
+    <main class="main"> 
+        <section class="product"> 
+            <div class="product__info"> 
+                <div class="container"> 
+                    <h1 class="product__title">Избранное</h1> 
+                    <h1 class="product__title product__title--gray">{{ products.count }}</h1> 
+                </div> 
+            </div> 
+
+ 
+            <div class="cards"> 
+                {% for product in products %} 
+                <div class="card" data-category="{{ product.category }}" data-country="{{ product.country }}"> 
+                    <div class="card__top"> 
+                        <a href="{% url 'product_detail' product.id %}" class="card__image"> 
+                            <img src="{{ product.base_image.url }}" alt="" /> 
+                        </a> 
+                        <div class="card__label">-{{ product.discount }}%</div> 
+                    </div> 
+                    <div class="card__bottom"> 
+                        <div class="card__prices"> 
+                            <div class="card__price card__price--discount">{{ product.discounted_price }}</div> 
+                            <div class="card__price card__price--common">{{ product.price }}</div> 
+                        </div> 
+                        <a href="{% url 'product_detail' product.id %}" class="card__title">{{ product.name }}</a> 
+                        <form method="POST" action="{% url 'add_to_cart' product.id %}"> 
+                            {% csrf_token %} 
+                            <button type="submit" class="card__add">В корзину</button> 
+                        </form> 
+                    </div> 
+                </div> 
+                {% empty %} 
+                <p>Нет продуктов, удовлетворяющих выбранным критериям.</p> 
+                {% endfor %} 
+            </div> 
+        </section> 
+ 
+        <!-- Всплывающее окно корзины (если нужно) --> 
+        <button class="cart" id="cart"> 
+            <img class="cart__image" src="{% static 'img/korzina.png' %}" alt="Cart" srcset="" /> 
+            <div class="cart__num" id="cart_num">{{ cart_count }}</div> 
+        </button> 
+        <div class="popup"> 
+            <div class="popup__container" id="popup_container"> 
+                <!-- Содержимое корзины --> 
+            </div> 
+        </div> 
+    </main> 
+</div> 
+{% endblock %}

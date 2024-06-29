@@ -1,0 +1,48 @@
+{% extends 'base_generic.html' %}
+{% block title %}Коллекции{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="wrapper">
+    <main class="main">
+        <section class="product">
+            <div class="product__info">
+                <div class="container">
+                    <h1 class="product__title">Коллекции</h1>
+                </div>
+            </div>
+
+            <!-- Вывод информации о коллекциях -->
+            <div class="cards">
+                {% for collection in collections %}
+                <div class="card">
+                    <div class="card__top">
+                        <img src="{{ collection.image.url }}" alt="{{ collection.name }}" class="card__image">
+                    </div>
+                    <div class="card__bottom">
+                        <a href="{% url 'collection_detail' collection.id %}" class="card__title">{{ collection.name }}</a>
+                        <p>{{ collection.description }}</p>
+                        <ul>
+                            {% for product in collection.products.all %}
+                            <li><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Всплывающее окно корзины (если нужно) -->
+        <button class="cart" id="cart">
+            <img class="cart__image" src="{% static 'img/korzina.png' %}" alt="Cart" srcset="" />
+            <div class="cart__num" id="cart_num">{{ cart_count }}</div>
+        </button>
+        <div class="popup">
+            <div class="popup__container" id="popup_container">
+                <!-- Содержимое корзины -->
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

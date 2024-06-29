@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Welcome, {{ user.username }}</h1>
+    <a href="{% url 'logout' %}">Logout</a>
+</div>
+{% endblock %}

@@ -1,0 +1,189 @@
+{% load static %} 
+{% load cart_tags %} 
+<!DOCTYPE html> 
+<html lang="en"> 
+ 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>NIKIFILINI</title> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /> 
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+</head> 
+ 
+<body> 
+  <div class="wrapper"> 
+    <header> 
+      <div class="logo"> 
+        <a href="./index.html" class="logo"> 
+          <img src="{% static './img/logo.png' %}" alt=""> 
+        </a> 
+      </div> 
+      <nav class="menu"> 
+        <ul class="menu_list"> 
+          <li><a href="{% url 'index' %}">Главная</a></li> 
+          <li><a href="#">Акции</a></li> 
+          <li><a href="#">Коллекции</a></li> 
+          <li><a href="{% url 'catalog' %}">Каталог</a></li> 
+          <li><a href="{% url 'about-company' %}">О нас</a></li> 
+        </ul> 
+      </nav> 
+      <div class="icon"> 
+        <ul class="icon_list"> 
+          <li><a href="{% url 'favorites' %}"> 
+              <img src="{% static 'img/izbr.png' %}" alt="" class="icon_img" id="favorite-icon"> 
+            </a></li> 
+          <li><a href="#"> 
+              <img src="{% static 'img/akk.png' %}" alt="" class="icon_img"> 
+            </a></li> 
+        </ul> 
+      </div> 
+    </header> 
+ 
+    <main class="main-product"> 
+      <section class="product-page"> 
+        <div class="gallery"> 
+          <div class="card__images"> 
+            <button class="card__imgs"> 
+ 
+              {%for img in product.images.all %} 
+              <button class="card__img" onclick="changeImage('{{ img.image.url }}')"> 
+                <img src="{{ img.image.url }}" alt="" class="card__img"> 
+              </button> 
+              {% endfor %} 
+               
+          </div> 
+          <div class="big-img"> 
+            <img src="{{ product.base_image.url }}" alt="" id="card__img"> 
+          </div> 
+        </div> 
+        <div class="product-container"> 
+          <h1 class="title__card">{{ product.name }}</h1> 
+          <p class="price">Цена:  {{ product.price }}</p> 
+          <p class="discount-price">Со скидкой: {{ product.discounted_price }}</p> 
+          <div class="size-grid"> 
+            <button class="size">S</button> 
+            <button class="size">M</button> 
+            <button class="size">L</button> 
+            <button class="size">XL<button> 
+          </div> 
+          <h2 class="desription-title">Описание</h2> 
+          <p class="description">{{ product.description }}</p> 
+ 
+            <div class="rating">  
+              <form action="" method="post" id="ratingForm">  
+                  {% csrf_token %}  
+                  <div id="rating_bar">  
+                      {% for i in "12345" %}  
+                          <span id="rate_{{ i }}" onclick="rateProduct({{ i }})">&#9734;</span>  
+                      {% endfor %}  
+                  </div>  
+                  <input type="hidden" name="stars" id="stars" value="{{ user_review.rating|default:1 }}">  
+              </form>  
+              <div class="rating-title"><p>{{ product.rating }} ({{ product.count_reviews }} отзывов)</p></div>  
+          </div> 
+          <form action="{% url 'add_to_cart' %}" method="post"> 
+            {% csrf_token %} 
+            <input type="hidden" name="product_id" value="{{ product.id }}"> 
+            <button class="btn-card">В корзину</button> 
+          </form> 
+          <div class="favorite"> 
+            <li> 
+              <a href="{% url 'toggle_favorite' product.id %}" class="favorite-btn {% if product_in_favorites %}favorited{% endif %}" data-product-id="{{ product.id }}"> 
+                {% if product_in_favorites %} 
+                    <img src="{% static 'img/izbr1.svg.webp' %}" alt="Удалить из избранного" class="icon_img" id="favorite-icon"> 
+                {% else %} 
+                    <img src="{% static 'img/izbr.png' %}" alt="Добавить в избранное" class="icon_img" id="favorite-icon"> 
+                {% endif %} 
+            </a>
+          </a> 
+        </li> 
+         
+        </div> 
+      </div> 
+
+    </section> 
+
+    {% show_cart %} 
+
+  </main> 
+
+  <footer> 
+    <div class="container"> 
+      <nav class="footer_menu"> 
+        <ul class="footer_list"> 
+          <li class="footer_menu_title"><a href="#" class="footer_li">Для клиентов</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">Промокоды и Купоны</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">Моя учетная запись</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">Оформить заказ</a></li> 
+        </ul> 
+        <ul class="footer_list"> 
+          <li class="footer_menu_title"><a href="#" class="footer_title">О нас</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">О компании</a></li> 
+        </ul> 
+        <ul class="footer_list"> 
+          <li class="footer_menu_title"><a href="#" class="footer_title">Информация</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">Доставка</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">Возврат</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">Публичная оферта</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">Пользовательское соглашение </a></li> 
+        </ul> 
+        <ul class="footer_list"> 
+          <li class="footer_menu_title"><a href="#" class="footer_title">Контакты</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">+7(499)686-05-91</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">Email: info@nikifilini.com</a></li> 
+          <li class="footer_menu_item"><a href="#" class="footer_li">г. Москва, ул. Большая Семеновская 49</a></li> 
+        </ul> 
+      </nav> 
+      <nav class="footer_copy"> 
+        <p class="footer_c">© NikiFilini.com 2024</p> 
+      </nav> 
+    </div> 
+  </footer> 
+</div> 
+
+<script>  
+    function changeImage(newSrc) {  
+      document.getElementById('card__img').src = newSrc;  
+    }  
+
+    function rateProduct(stars) {  
+      document.getElementById('stars').value = stars;  
+      document.getElementById('ratingForm').submit();  
+    }  
+
+    const sizeButtons = document.querySelectorAll('.size');  
+
+    sizeButtons.forEach(button => {  
+      button.addEventListener('click', () => {  
+        button.style.backgroundColor = '#e06adc';  
+        button.style.color = '#fff';  
+      });  
+    });  
+
+    // Highlight the current user's rating  
+    const userRating = parseInt(document.getElementById('stars').value);  
+    for (let i = 1; i <= userRating; i++) {  
+      document.getElementById('rate_' + i).innerText = '⭐';  
+    }  
+
+    let spans = document.getElementById("rating_bar").getElementsByTagName('span');  
+    for(let i = 0; i < spans.length; i++){  
+        spans[i].addEventListener('click', function() {  
+            for(let j = 0; j < spans.length; j++){  
+                spans[j].innerText = '☆';  
+            }  
+            for(let j = 0; j <= i; j++){  
+                spans[j].innerText = '⭐';  
+            }  
+        });  
+    }  
+  </script> 
+
+<script src="{% static 'js/main.js' %}" type="module" defer></script> 
+<script src="{% static 'js/slider.js' %}" type="module" defer></script> 
+
+</body> 
+
+</html>
+`

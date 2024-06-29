@@ -1,0 +1,43 @@
+{% load static %}
+
+<button class="cart" id="cart">
+    <img class="cart__image" src="{% static 'img/korzina.png' %}" alt="Cart" />
+    <div class="cart__num" id="cart_num">{{ cart_count }}</div>
+</button>
+<div class="popup" id="cart_popup">
+    <div class="popup__container">
+        <div class="popup__header">
+            <h2>Your Cart</h2>
+            <button class="popup__close" id="popup_close">&times;</button>
+        </div>
+        <div class="popup__body">
+            {% if cart_items %}
+                <ul class="cart__items">
+                    {% for item in cart_items %}
+                        <li class="cart__item" data-item-id="{{ item.id }}">
+                            <span class="cart__item-name">{{ item.product.name }}</span>
+                            <div class="cart__item-controls">
+                                <button class="cart__item-decrease">-</button>
+                                <span class="cart__item-quantity">{{ item.total_quantity }}</span>
+                                <button class="cart__item-increase">+</button>
+                            </div>
+                            <span class="cart__item-price">{{ item.product.price }}</span>
+                            <span class="cart__item-total">{{ item.total_price }}</span>
+                            <button class="cart__item-remove">Remove</button>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="cart__total">
+                    <p>Total: <span>{{ cart_total_price }}</span></p>
+                </div>
+                <div class="cart__actions">
+                    <button class="btn btn-primary">Checkout</button>
+                    <button class="btn btn-secondary">Continue Shopping</button>
+                </div>
+            {% else %}
+                <p class="cart__empty-message">Your cart is empty.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/cart.js' %}"></script>

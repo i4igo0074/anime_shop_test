@@ -1,0 +1,29 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+      
+        <main>
+          <section class="top">
+            <div class="container">
+              <h1 class="title">Limited Edition</h1>
+              <a href="#" class="top_link">Evangelion</a>
+            </div>
+          </section>
+          <div class="sliderA">
+            <div class="swipeAr">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide" style="background-image: url({% static 'img/slide-1.jpg' %});"></div>
+                <div class="swiper-slide" style="background-image: url({% static 'img/slide-2.jpg' %});"></div>
+              </div> 
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+          <section class="category">
+            <a href="catalog.html" class="category-link"><img class="category-link-img" src="{% static 'img/hoodie-768x512.jpg' %}" alt=""></a>
+            <a href="catalog.html" class="category-link"><img class="category-link-img" src="{% static 'img/soon-768x512.jpg' %}" alt=""></a>
+            <a href="catalog.html" class="category-link"><img class="category-link-img" src="{% static 'img/t-shirt-768x512.jpg' %}" alt=""></a>
+          </section>
+        </main>
+{% endblock %}
+
